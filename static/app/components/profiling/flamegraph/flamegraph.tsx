@@ -290,12 +290,17 @@ function Flamegraph(props: FlamegraphProps): ReactElement {
           minWidth: spanChart.minSpanDuration,
           barHeight: flamegraphTheme.SIZES.SPANS_BAR_HEIGHT,
           depthOffset: flamegraphTheme.SIZES.SPANS_DEPTH_OFFSET,
+          configSpaceTransform:
+            // When a standalone axis is selected, the spans need to be relative to profile start time
+            xAxis === 'standalone'
+              ? new Rect(-(flamegraph.profile.startedAt * 1e3), 0, 0, 0)
+              : Rect.Empty(),
         },
       });
 
       return newView;
     },
-    [spanChart, spansCanvas, flamegraphTheme.SIZES]
+    [spanChart, spansCanvas, xAxis, flamegraph.profile.startedAt, flamegraphTheme.SIZES]
   );
 
   useEffect(() => {
