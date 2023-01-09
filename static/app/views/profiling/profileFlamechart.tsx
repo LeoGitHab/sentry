@@ -93,7 +93,10 @@ function ProfileFlamegraph(): React.ReactElement {
   const [storedPreferences] = useLocalStorageState<DeepPartial<FlamegraphState>>(
     FLAMEGRAPH_LOCALSTORAGE_PREFERENCES_KEY,
     {
-      preferences: {layout: DEFAULT_FLAMEGRAPH_STATE.preferences.layout},
+      preferences: {
+        layout: DEFAULT_FLAMEGRAPH_STATE.preferences.layout,
+        view: DEFAULT_FLAMEGRAPH_STATE.preferences.view,
+      },
     }
   );
 
@@ -120,6 +123,10 @@ function ProfileFlamegraph(): React.ReactElement {
       preferences: {
         ...storedPreferences.preferences,
         ...queryStringState.preferences,
+        timelines: {
+          ...DEFAULT_FLAMEGRAPH_STATE.preferences.timelines,
+          ...(storedPreferences?.preferences?.timelines ?? {}),
+        },
         layout:
           storedPreferences?.preferences?.layout ??
           queryStringState.preferences?.layout ??
